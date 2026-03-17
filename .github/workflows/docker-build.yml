@@ -21,7 +21,10 @@ jobs:
 
       - name: Compute lowercase image repo
         id: image_repo
-        run: echo "repo=ghcr.io/${{ toLower(github.repository) }}" >> "$GITHUB_OUTPUT"
+        shell: bash
+        run: |
+          repo="$(echo "${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')"
+          echo "repo=ghcr.io/${repo}" >> "$GITHUB_OUTPUT"
 
       - name: Build & push API
         uses: docker/build-push-action@v6
