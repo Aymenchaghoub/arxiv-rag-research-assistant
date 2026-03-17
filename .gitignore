@@ -1,0 +1,26 @@
+# Env / secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+
+# Data artifacts
+data/raw/
+data/processed/
+*.pdf
+
+# Local Chroma / caches
+.chroma/
+chroma_data/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
