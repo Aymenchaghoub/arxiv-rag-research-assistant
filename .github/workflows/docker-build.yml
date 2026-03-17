@@ -19,6 +19,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Compute lowercase image repo
+        id: image_repo
+        run: echo "repo=ghcr.io/${{ toLower(github.repository) }}" >> "$GITHUB_OUTPUT"
+
       - name: Build & push API
         uses: docker/build-push-action@v6
         with:
@@ -26,8 +30,8 @@ jobs:
           file: docker/Dockerfile.api
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/api:latest
-            ghcr.io/${{ github.repository }}/api:${{ github.sha }}
+            ${{ steps.image_repo.outputs.repo }}/api:latest
+            ${{ steps.image_repo.outputs.repo }}/api:${{ github.sha }}
 
       - name: Build & push frontend
         uses: docker/build-push-action@v6
@@ -36,6 +40,6 @@ jobs:
           file: docker/Dockerfile.frontend
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/frontend:latest
-            ghcr.io/${{ github.repository }}/frontend:${{ github.sha }}
+            ${{ steps.image_repo.outputs.repo }}/frontend:latest
+            ${{ steps.image_repo.outputs.repo }}/frontend:${{ github.sha }}
 
