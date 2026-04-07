@@ -1,6 +1,7 @@
 # Env / secrets
 .env
-
+.agent/
+.github/prompts/
 # Python
 __pycache__/
 *.py[cod]
