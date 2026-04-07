@@ -132,12 +132,26 @@ class SentenceChunker(BaseChunker):
         return self._finalize(docs=docs)
 
     def _ensure_nltk_punkt(self) -> None:
+        start = time.perf_counter()
+        downloaded: list[str] = []
+
         try:
             nltk.data.find("tokenizers/punkt")
         except LookupError:
-            start = time.perf_counter()
             nltk.download("punkt", quiet=True)
-            logger.info("Downloaded NLTK punkt", extra={"seconds": time.perf_counter() - start})
+            downloaded.append("punkt")
+
+        try:
+            nltk.data.find("tokenizers/punkt_tab")
+        except LookupError:
+            nltk.download("punkt_tab", quiet=True)
+            downloaded.append("punkt_tab")
+
+        if downloaded:
+            logger.info(
+                "Downloaded NLTK tokenizers",
+                extra={"resources": downloaded, "seconds": time.perf_counter() - start},
+            )
 
 
 class PageLevelChunker(BaseChunker):
